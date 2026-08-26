@@ -13,7 +13,7 @@ Standard Pashto AI models often fail to capture the rich, localized grammar and 
 
 ## 🚀 Why This Matters
 Standard Pashto models use Peshawari or Kandahari dialects. This model was specifically trained to recognize unique Khattak linguistic markers:
-* **Future Tense:** Uses `بو` (bo) instead of standard `به` (ba). *(e.g., زه بو سبو چار کاون)*
+* **Future Tense:** Uses `بو` (bo) instead of standard `به` (ba). *(e.g., زه بو سبو چار کاوں)*
 * **Possession:** Uses `مو والا` (mo wala) instead of standard `زما` (zama).
 * **Vocabulary:** Uses pure Khattak words like `استر` (astr - big), `کسو` (kso - bad/dirty), and `سبو` (sabo - tomorrow).
 * **Gendered Adjectives:** Perfectly adapts feminine/masculine rules unique to the dialect (e.g., `ستره` vs `استر`).
@@ -104,21 +104,63 @@ The model was trained for 4 epochs (620 steps). The training loss steadily and s
 You can load this model directly from Hugging Face using Unsloth or Transformers:
 
 ```python
-from unsloth import FastLanguageModel
+# 1. Install Unsloth (Because Colab restarted)
+!pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
+!pip install --no-deps xformers trl peft accelerate bitsandbytes datasets pandas
 
-# Load the Khattak Model
+# 2. Now run the test script!
+from unsloth import FastLanguageModel
+import torch
+
+print("\nLoading Khatta-ka AI...")
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "adrainbialon/Khatta-ka",
+    model_name = "adrainbialon/Khatta-ka", 
     max_seq_length = 2048,
+    dtype = None,
     load_in_4bit = True,
 )
+
+# Enable Unsloth's 2x faster inference
 FastLanguageModel.for_inference(model)
 
-# Format the prompt
-prompt = """Below is an instruction. Write a detailed response in Pashto.
+# 3. The Prompt Format
+alpaca_prompt = """Below is an instruction. Write a detailed response in Pashto.
+
 ### Instruction:
-I will do the work tomorrow.
+{}
+
 ### Response:
+"""
+
+# 4. The 5 Brand New Test Sentences
+test_sentences = [
+    "I will go to the big market tomorrow.",
+    "My grandmother is a very good woman.",
+    "We will not eat the bad meat.",
+    "I am tired, I will sit on the ground.",
+    "The boy saw a snake in the room."
+]
+
+print("\n" + "="*50)
+print("🧪 TESTING UNSEEN SENTENCES")
+print("="*50)
+
+# 5. Loop through and translate each sentence
+for sentence in test_sentences:
+    inputs = tokenizer(
+    [
+        alpaca_prompt.format(sentence, "")
+    ], return_tensors = "pt").to("cuda")
+
+    outputs = model.generate(**inputs, max_new_tokens = 64, use_cache = True)
+    response = tokenizer.batch_decode(outputs, skip_special_tokens = True)[0]
+    
+    # Extract just the AI's response
+    khattak_output = response.split("### Response:\n")[-1].strip()
+    
+    print(f"English: {sentence}")
+    print(f"AI Output: {khattak_output}")
+    print("-" * 50)
 """
 
 inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
