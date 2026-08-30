@@ -10,7 +10,7 @@ Standard Pashto AI models often fail to capture the rich, localized grammar and 
 ## 📸 Model in Action
 *(Here is the AI successfully translating English into pure Khattak Pashto on unseen test sentences)*
 
-![Khattak AI Output 2](khatta-ka2.PNG)
+![Khattak AI Output 2](khatta-ka3.PNG)
 
 ## 🚀 Why This Matters
 Standard Pashto models use Peshawari or Kandahari dialects. This model was specifically trained to recognize unique Khattak linguistic markers:
@@ -28,7 +28,7 @@ Standard Pashto models use Peshawari or Kandahari dialects. This model was speci
 ## 📈 Training Performance
 The model was trained for 4 epochs (620 steps). The training loss steadily and successfully decreased from **3.44** down to **0.22**, indicating excellent adaptation to the Khattak dataset without overfitting.
 
-![Training Process](khatta-ka3.PNG)
+![Training Process](khatta-ka2.PNG)
 
 <details>
 <summary><b>Click here to view the full Training Loss History</b></summary>
