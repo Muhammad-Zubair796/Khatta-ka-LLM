@@ -1,6 +1,7 @@
 # Khatta-ka AI: Khattak Dialect Pashto LLM 🏔️
 
-**[Read the Full Engineering Case Study on my Portfolio](https://www.mzubair.online/projects/khata-ka-llm)** | **[View Model on Hugging Face](https://huggingface.co/Muhammad-Zubair796/Khatta-ka)**
+**[Read the Full Engineering Case Study on my Portfolio](https://www.mzubair.online/projects/khatta-ka-llm
+)** | **[View Model on Hugging Face](https://huggingface.co/Muhammad-Zubair796/Khatta-ka)**
 
 The world's first AI language model fine-tuned specifically to understand and generate the **Khattak dialect** of the Pashto language. 
 
