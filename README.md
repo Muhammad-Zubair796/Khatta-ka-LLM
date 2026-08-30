@@ -1,13 +1,13 @@
 # Khatta-ka AI: Khattak Dialect Pashto LLM 🏔️
 
+**[Read the Full Engineering Case Study on my Portfolio](https://www.mzubair.online/projects/khata-ka-llm)** | **[View Model on Hugging Face](https://huggingface.co/Muhammad-Zubair796/Khatta-ka)**
+
 The world's first AI language model fine-tuned specifically to understand and generate the **Khattak dialect** of the Pashto language. 
 
 Standard Pashto AI models often fail to capture the rich, localized grammar and vocabulary of rural dialects. This project bridges that gap by fine-tuning a base Pashto LLM to speak exactly like a native from the Khattak tribe regions (Karak, Nowshera, Kohat).
 
 ## 📸 Model in Action
 *(Here is the AI successfully translating English into pure Khattak Pashto on unseen test sentences)*
-
-![Khattak AI Output 1](khatta-ka.PNG)
 
 ![Khattak AI Output 2](khatta-ka2.PNG)
 
@@ -99,12 +99,13 @@ The model was trained for 4 epochs (620 steps). The training loss steadily and s
 
 </details>
 
+
 ## 💻 How to Use the Model
 
 You can load this model directly from Hugging Face using Unsloth or Transformers:
 
 ```python
-# 1. Install Unsloth (Because Colab restarted)
+# 1. Install Unsloth
 !pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
 !pip install --no-deps xformers trl peft accelerate bitsandbytes datasets pandas
 
@@ -114,7 +115,7 @@ import torch
 
 print("\nLoading Khatta-ka AI...")
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "adrainbialon/Khatta-ka", 
+    model_name = "Muhammad-Zubair796/Khatta-ka", # <--- FIXED THIS TO YOUR MODEL
     max_seq_length = 2048,
     dtype = None,
     load_in_4bit = True,
@@ -161,11 +162,3 @@ for sentence in test_sentences:
     print(f"English: {sentence}")
     print(f"AI Output: {khattak_output}")
     print("-" * 50)
-"""
-
-inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
-outputs = model.generate(**inputs, max_new_tokens = 64, use_cache = True)
-response = tokenizer.batch_decode(outputs, skip_special_tokens = True)[0]
-
-print(response.split("### Response:\n")[-1])
-# Output: زه بو سبو چار کاوں
